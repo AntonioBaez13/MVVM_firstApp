@@ -10,7 +10,6 @@ namespace MVVM_firstApp.Pages
         public ShellViewModel()
         {
             Combinations = new ObservableCollection<Combination>();
-            Combinations.Add(new Combination() { Puntos = 1, Jugada = "13" });
         }
 
     }

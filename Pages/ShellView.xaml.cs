@@ -11,8 +11,6 @@ namespace MVVM_firstApp.Pages
     public partial class ShellView : Window
     {
 
-        ShellViewModel viewModel = new ShellViewModel();
-
         public ShellView()
         {
             InitializeComponent();
@@ -56,7 +54,7 @@ namespace MVVM_firstApp.Pages
         private void AddValuesToCollection()
         {
             int puntos = Int32.Parse(PuntosInput.Text);
-            viewModel.Combinations.Add(new Combination() {Puntos = puntos, Jugada = JugadaInput.Text });
+            ((ShellViewModel)DataContext).Combinations.Add(new Combination() { Puntos = puntos, Jugada = JugadaInput.Text });
             EmptyTextBoxes();
         }
 
