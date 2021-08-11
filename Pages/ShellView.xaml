@@ -1,0 +1,116 @@
+﻿<Window x:Class="MVVM_firstApp.Pages.ShellView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:s="https://github.com/canton7/Stylet"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:MVVM_firstApp.Pages"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance local:ShellViewModel}"
+        Title="Stylet Project" Height="450" Width="800" Background="#FFE4E4E4">
+    <Grid>
+        <TabControl>
+            <TabItem Header="Venta" Width="70">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="20"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="20"/>
+                    </Grid.RowDefinitions>
+                    <!--Column 1, 2 and 3-->
+                    <TextBox x:Name="totalSum" IsEnabled="False" IsReadOnly="True" 
+                             Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2"
+                             TextWrapping="Wrap" Text="0.00 €" TextAlignment="Center" 
+                             FontWeight="Bold" FontSize="18" Background="Black" 
+                             Foreground="#FF23EE54"/>
+                    <Label Content="Puntos"
+                           Grid.Column="3" Grid.Row="2"/>
+                    <TextBox Name="PuntosInput" PreviewTextInput="NoLettersAllowed" 
+                             Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2"
+                             TextWrapping="Wrap" Margin="5" MaxLength="1" 
+                             KeyDown="PuntosInput_KeyDown"/>
+                    <Label Content="Num, Pale, Trip" 
+                           Grid.Column="3" Grid.Row="3" />
+                    <TextBox Name="JugadaInput" PreviewTextInput="NoLettersAllowed" 
+                             Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2"
+                             TextWrapping="Wrap" Margin="5" MaxLength="4"
+                             KeyDown="JugadaInput_KeyDown" />
+                    
+                    <ListView x:Name="VistaPrevia" Height="193" Width="210" Margin="0,0,20,0"
+                              Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="3"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                              ItemsSource="{Binding Combinations}">
+                        <ListView.Resources>
+                            <Style TargetType="GridViewColumnHeader">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </Style>
+                        </ListView.Resources>
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="50" DisplayMemberBinding="{Binding Puntos}"/>
+                                <GridViewColumn Width="70">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Label Content="a el"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn  Width="90" DisplayMemberBinding="{Binding Jugada}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <!--
+                    <Button x:Name="BotonImprimir" Content="Imprimir" 
+                            Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="5"
+                           Margin="0,0,20,10"
+                             Click="BotonImprimir_Click"/>
+                    <Button Content="-"
+                            Grid.Column="1" Grid.Row="6"
+                            Click="Eliminar_Numero"/>
+                    <Button Content="Cancelar" Margin="10,0,20,0"
+                            Grid.Column="2" Grid.Row="6" Grid.ColumnSpan="2"         
+                            Click="Borrar_Jugada" />
+                    -->
+                </Grid>
+            </TabItem>
+            <TabItem Header="Reportes" Width="70">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="20" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="20" />
+                    </Grid.RowDefinitions>
+                    <DatePicker x:Name="Fecha" Grid.Column="1" Grid.Row="1"
+                                SelectedDate="{x:Static sys:DateTime.Now}"/>
+                    <Button x:Name="ReporteDeVentas" Content="Reporte De Ventas" Grid.Column="1" 
+                            Grid.Row="2" Margin="0,5"/>
+                    <TextBox x:Name="Reporte" Grid.Column="2" Grid.Row="1" Margin="10,0"
+                             Grid.RowSpan="2" TextWrapping="Wrap" Width="283" />
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
