@@ -57,6 +57,16 @@ namespace MVVM_firstApp.Pages
         {
             int puntos = cleanText.CleanPuntosInput(PuntosInput.Text);
             string jugada = cleanText.CleanJugadaInput(JugadaInput.Text);
+
+            if (jugada.Length > 2)
+            {
+                puntos = 1;
+            }
+            else if (puntos > 5)
+            {
+                puntos = 5;
+            }
+
             ((ShellViewModel)DataContext).Combinations.Add(new Combination() { Puntos = puntos, Jugada = jugada });
             EmptyTextBoxes();
         }
