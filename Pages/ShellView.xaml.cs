@@ -11,6 +11,8 @@ namespace MVVM_firstApp.Pages
     public partial class ShellView : Window
     {
 
+        CleanTextBoxes cleanText = new CleanTextBoxes();
+
         public ShellView()
         {
             InitializeComponent();
@@ -53,8 +55,9 @@ namespace MVVM_firstApp.Pages
 
         private void AddValuesToCollection()
         {
-            int puntos = Int32.Parse(PuntosInput.Text);
-            ((ShellViewModel)DataContext).Combinations.Add(new Combination() { Puntos = puntos, Jugada = JugadaInput.Text });
+            int puntos = cleanText.CleanPuntosInput(PuntosInput.Text);
+            string jugada = cleanText.CleanJugadaInput(JugadaInput.Text);
+            ((ShellViewModel)DataContext).Combinations.Add(new Combination() { Puntos = puntos, Jugada = jugada });
             EmptyTextBoxes();
         }
 
