@@ -55,7 +55,7 @@
                     <ListView x:Name="VistaPrevia" Height="193" Width="210" Margin="0,0,20,0"
                               Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="3"
                               ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                              ItemsSource="{Binding Combinations}">
+                              ItemsSource="{Binding Combinations}" SelectedItem="{Binding SelectedCombination}">
                         <ListView.Resources>
                             <Style TargetType="GridViewColumnHeader">
                                 <Setter Property="Visibility" Value="Collapsed"/>

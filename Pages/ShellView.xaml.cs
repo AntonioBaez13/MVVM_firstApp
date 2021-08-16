@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 
@@ -67,7 +66,8 @@ namespace MVVM_firstApp.Pages
                 puntos = 5;
             }
 
-            ((ShellViewModel)DataContext).Combinations.Add(new Combination() { Puntos = puntos, Jugada = jugada });
+            ((ShellViewModel)DataContext).AddToCollection(puntos, jugada);
+
             EmptyTextBoxes();
         }
 
