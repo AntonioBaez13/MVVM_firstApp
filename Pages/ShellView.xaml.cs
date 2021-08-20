@@ -68,6 +68,8 @@ namespace MVVM_firstApp.Pages
 
             ((ShellViewModel)DataContext).AddToCollection(puntos, jugada);
 
+            //Scroll into view of the selected Item (Might Change)
+            VistaPrevia.ScrollIntoView(VistaPrevia.SelectedItem);
             EmptyTextBoxes();
         }
 
