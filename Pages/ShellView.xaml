@@ -34,9 +34,9 @@
                         <RowDefinition Height="20"/>
                     </Grid.RowDefinitions>
                     <!--Column 1, 2 and 3-->
-                    <TextBox x:Name="totalSum" IsEnabled="False" IsReadOnly="True" 
+                    <TextBox IsEnabled="False" IsReadOnly="True" 
                              Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2"
-                             TextWrapping="Wrap" Text="0.00 €" TextAlignment="Center" 
+                             TextWrapping="Wrap" Text="{Binding PuntosTotalSum}" TextAlignment="Center" 
                              FontWeight="Bold" FontSize="18" Background="Black" 
                              Foreground="#FF23EE54"/>
                     <Label Content="Puntos"
