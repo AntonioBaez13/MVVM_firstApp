@@ -1,4 +1,5 @@
 ﻿using Stylet;
+using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
@@ -13,18 +14,20 @@ namespace MVVM_firstApp.Pages
 
         public Combination SelectedCombination
         {
-            get { return _selectedCombination; }
-            set { SetAndNotify(ref _selectedCombination, value); }
+            get => _selectedCombination;
+            set => SetAndNotify(ref _selectedCombination, value);
         }
-
 
         private string _puntosTotalSum;
 
         public string PuntosTotalSum
         {
-            get { return _puntosTotalSum; }
-            set { SetAndNotify(ref _puntosTotalSum, value); }
+            get => _puntosTotalSum;
+            set => SetAndNotify(ref _puntosTotalSum, value);
         }
+
+        private double TotalSum { get; set; }
+
         public ShellViewModel()
         {
             Combinations = new ObservableCollection<Combination>();
@@ -37,11 +40,29 @@ namespace MVVM_firstApp.Pages
             SelectedCombination = Combinations.Last();
         }
 
-        //TODO: Text box to retrieve the sum of property puntos value
+        //Text box to retrieve the sum of property puntos value
         public void SumPuntos()
         {
-            double total = Combinations.Sum(x => x.Puntos);
-            PuntosTotalSum = total.ToString("C", CultureInfo.GetCultureInfo("es-ES"));
+            TotalSum = Combinations.Sum(x => x.Puntos);
+            PuntosTotalSum = TotalSum.ToString("C", CultureInfo.GetCultureInfo("es-ES"));
+        }
+
+        public void AddValuesAndPrint()
+        {
+            throw new NotImplementedException();
+            //TODO: Add all the items on the collection to a database, and if suscesfull print a receipt
+        }
+
+        public void RemoveSelectedItem()
+        {
+            Combinations.Remove(SelectedCombination);
+            SumPuntos();
+        }
+
+        public void RemoveAllItems()
+        {
+            Combinations.Clear();
+            SumPuntos();
         }
     }
 }

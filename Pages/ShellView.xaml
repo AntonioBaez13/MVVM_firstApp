@@ -51,7 +51,6 @@
                              Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2"
                              TextWrapping="Wrap" Margin="5" MaxLength="4"
                              KeyDown="JugadaInput_KeyDown" />
-                    
                     <ListView x:Name="VistaPrevia" Height="193" Width="210" Margin="0,0,20,0"
                               Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="3"
                               ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -75,18 +74,14 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <!--
-                    <Button x:Name="BotonImprimir" Content="Imprimir" 
-                            Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="5"
-                           Margin="0,0,20,10"
-                             Click="BotonImprimir_Click"/>
-                    <Button Content="-"
-                            Grid.Column="1" Grid.Row="6"
-                            Click="Eliminar_Numero"/>
+                    <Button Content="Imprimir" Margin="0,0,20,10"
+                            Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="5" 
+                            Command="{s:Action AddValuesAndPrint}" />
+                    <Button Content="-" Grid.Column="1" Grid.Row="6"
+                            Command="{s:Action RemoveSelectedItem}" />
                     <Button Content="Cancelar" Margin="10,0,20,0"
-                            Grid.Column="2" Grid.Row="6" Grid.ColumnSpan="2"         
-                            Click="Borrar_Jugada" />
-                    -->
+                            Grid.Column="2" Grid.Row="6" Grid.ColumnSpan="2" 
+                            Command="{s:Action RemoveAllItems}" />
                 </Grid>
             </TabItem>
             <TabItem Header="Reportes" Width="70">
