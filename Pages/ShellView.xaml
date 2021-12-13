@@ -82,6 +82,10 @@
                     <Button Content="Cancelar" Margin="10,0,20,0"
                             Grid.Column="2" Grid.Row="6" Grid.ColumnSpan="2" 
                             Command="{s:Action RemoveAllItems}" />
+        
+                    <!-- Column 4, 5 -->
+                    <ComboBox ItemsSource="{Binding Loteria}" DisplayMemberPath="Name"
+                        Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="5"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Reportes" Width="70">

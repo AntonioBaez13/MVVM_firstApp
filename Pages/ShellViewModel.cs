@@ -1,5 +1,7 @@
-﻿using Stylet;
+﻿using MVVM_firstApp.Models;
+using Stylet;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
@@ -8,6 +10,7 @@ namespace MVVM_firstApp.Pages
 {
     public class ShellViewModel : Screen
     {
+        private readonly GenericRepository<Loteria> LoteriaRepository;
         public ObservableCollection<Combination> Combinations { get; set; }
 
         private Combination _selectedCombination;
@@ -20,7 +23,7 @@ namespace MVVM_firstApp.Pages
 
         private string _puntosTotalSum;
 
-        public string PuntosTotalSum
+        public string PuntosTotalSum    
         {
             get => _puntosTotalSum;
             set => SetAndNotify(ref _puntosTotalSum, value);
@@ -30,7 +33,9 @@ namespace MVVM_firstApp.Pages
 
         public ShellViewModel()
         {
+            LoteriaRepository = new GenericRepository<Loteria>(new LotoContext());
             Combinations = new ObservableCollection<Combination>();
+            var queryable = this.LoteriaRepository.GetAll().;
         }
 
         public void AddToCollection(int puntos, string jugada)
