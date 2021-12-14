@@ -10,7 +10,18 @@ namespace MVVM_firstApp.Pages
 {
     public class ShellViewModel : Screen
     {
-        private readonly GenericRepository<Loteria> LoteriaRepository;
+        private readonly IGenericRepository<Loteria> LoteriaRepository;
+
+        public IEnumerable<Loteria> Loterias { get; set; }
+
+        private Loteria _selectedLoteria;
+
+        public Loteria SelectedLoteria
+        {
+            get => _selectedLoteria;
+            set => SetAndNotify(ref _selectedLoteria, value);
+        }
+
         public ObservableCollection<Combination> Combinations { get; set; }
 
         private Combination _selectedCombination;
@@ -35,7 +46,7 @@ namespace MVVM_firstApp.Pages
         {
             LoteriaRepository = new GenericRepository<Loteria>(new LotoContext());
             Combinations = new ObservableCollection<Combination>();
-            var queryable = this.LoteriaRepository.GetAll().;
+            Loterias = this.LoteriaRepository.GetAll();
         }
 
         public void AddToCollection(int puntos, string jugada)

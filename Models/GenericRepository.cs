@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 
 namespace MVVM_firstApp.Models
 {
-    public class GenericRepository<T> where T: class
+    public class GenericRepository<T>: IGenericRepository<T> where T: class
     {
         private readonly LotoContext dbContext;
         private readonly DbSet<T> dbSet;
@@ -28,17 +28,12 @@ namespace MVVM_firstApp.Models
             return this.dbSet.Remove(entity).Entity;
         }
 
-        //public virtual T DeleteAll()
-        //{
-        //    Z.EntityFramework.Plus
-        //    this.dbSet.Delete();
-        //}
-
-        //public virtual int Update(Expression<Func<T, bool>> predicate, Expression<Func<T, T>> updateFactory)
-        //{
-        //    Z.EntityFramework.Plus
-        //    return this.dbSet.Where(predicate).Update(Update);
-        //} 
+        public virtual int Update(Expression<Func<T, bool>> predicate, Expression<Func<T, T>> updateFactory)
+        {
+            throw new NotImplementedException();
+            //Z.EntityFramework.Plus
+            //return this.dbSet.Where(predicate).Update(Update);
+        }
 
         public IEnumerable<T> FindBy(Expression<Func<T, bool>> predicate)
         {
@@ -57,17 +52,22 @@ namespace MVVM_firstApp.Models
         public IEnumerable<T> GetWithInclude(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] paths)
         {
             IQueryable<T> queryable = this.dbSet.Where(predicate);
-            //if(paths != null)
-            //{
-            //    Z.EntityFramework.Plus.QueryIncludeOptimized.EF6
-            //    queryable = paths.Aggregate(queryable, (current, path) => current.IncludeOptimized(path));
-            //}
+            if (paths != null)
+            {
+                //Z.EntityFramework.Plus.QueryIncludeOptimized.EF6
+                //queryable = paths.Aggregate(queryable, (current, path) => current.IncludeOptimized(path));
+            }
 
             return queryable.AsEnumerable();
         }
         public virtual void Save()
         {
             this.dbContext.SaveChanges();
+        }
+
+        public void Delete(Expression<Func<T, bool>> predicate)
+        {
+            throw new NotImplementedException();
         }
     }
 }

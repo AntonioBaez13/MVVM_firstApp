@@ -84,8 +84,9 @@
                             Command="{s:Action RemoveAllItems}" />
         
                     <!-- Column 4, 5 -->
-                    <ComboBox ItemsSource="{Binding Loteria}" DisplayMemberPath="Name"
-                        Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="5"/>
+                    <ComboBox ItemsSource="{Binding Loterias}" SelectedValue="{Binding SelectedLoteria}" 
+                              Width="150" DisplayMemberPath="Name"
+                              Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="5"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Reportes" Width="70">
