@@ -17,5 +17,9 @@ namespace MVVM_firstApp.Models
         }
 
         public DbSet<Loteria> Loteria { get; set; }
+        public DbSet<Jugada> Jugada { get; set; }
+        public DbSet<Ticket> Ticket { get; set; }
+        public DbSet<TicketJugada> TicketJugada { get; set; }
+
     }
 }
