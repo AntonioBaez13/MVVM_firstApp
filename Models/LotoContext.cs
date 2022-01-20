@@ -14,6 +14,14 @@ namespace MVVM_firstApp.Models
         {
             //TODO implement the relationships between tables here 
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<TicketJugada>()
+                .HasKey(tj => new { tj.TicketId, tj.JugadaId });
+
+            modelBuilder.Entity<Jugada>()
+                .HasOne(l => l.Loteria)
+                .WithMany(l => l.Jugadas)
+                .HasForeignKey(l => l.LoteriaId);
         }
 
         public DbSet<Loteria> Loteria { get; set; }
