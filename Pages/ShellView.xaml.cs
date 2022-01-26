@@ -17,7 +17,6 @@ namespace MVVM_firstApp.Pages
             InitializeComponent();
         }
 
-        // Only Allow numbers on the textboxes 
         private void NoLettersAllowed(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new("[^0-9]+");

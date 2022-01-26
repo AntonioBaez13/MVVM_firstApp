@@ -11,11 +11,9 @@ namespace MVVM_firstApp.Pages
     public class ShellViewModel : Screen
     {
         private readonly IGenericRepository<Loteria> LoteriaRepository;
-
         public IEnumerable<Loteria> Loterias { get; set; }
 
         private Loteria _selectedLoteria;
-
         public Loteria SelectedLoteria
         {
             get => _selectedLoteria;
@@ -25,7 +23,6 @@ namespace MVVM_firstApp.Pages
         public ObservableCollection<Combination> Combinations { get; set; }
 
         private Combination _selectedCombination;
-
         public Combination SelectedCombination
         {
             get => _selectedCombination;
@@ -33,7 +30,6 @@ namespace MVVM_firstApp.Pages
         }
 
         private string _puntosTotalSum;
-
         public string PuntosTotalSum    
         {
             get => _puntosTotalSum;
@@ -51,7 +47,17 @@ namespace MVVM_firstApp.Pages
 
         public void AddToCollection(int puntos, string jugada)
         {
-            Combinations.Add(new Combination() { Puntos = puntos, Jugada = jugada });
+            //if the jugada is already in the collection, only update the puntos
+            if (Combinations.Any(x => x.Jugada == jugada))
+            {
+                var record = Combinations.FirstOrDefault(x => x.Jugada == jugada);
+                if((record.Puntos + puntos) <= 5 && jugada.Length < 4) record.Puntos += puntos;
+            }
+            else
+            {
+                Combinations.Add(new Combination() { Puntos = puntos, Jugada = jugada });
+            }
+                
             SumPuntos();
             SelectedCombination = Combinations.Last();
         }
@@ -65,6 +71,15 @@ namespace MVVM_firstApp.Pages
 
         public void AddValuesAndPrint()
         {
+            if (Combinations.Count > 0)
+            {
+                //TODO:
+                //get the selected loteria
+                //method in which I will pass the selcted loteria and the combinations
+                //if the method can succesfully add the values to the database 
+                //RemoveAllItems();
+                //else continue
+            }
             throw new NotImplementedException();
             //TODO: Add all the items on the collection to a database, and if suscesfull print a receipt
         }
