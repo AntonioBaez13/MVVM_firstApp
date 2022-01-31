@@ -10,7 +10,9 @@ namespace MVVM_firstApp.Pages
 {
     public class ShellViewModel : Screen
     {
-        private readonly IGenericRepository<Loteria> LoteriaRepository;
+        public DatabaseOperations databaseOperations = new DatabaseOperations(); 
+
+        private readonly LotoContext db;
         public IEnumerable<Loteria> Loterias { get; set; }
 
         private Loteria _selectedLoteria;
@@ -40,9 +42,9 @@ namespace MVVM_firstApp.Pages
 
         public ShellViewModel()
         {
-            LoteriaRepository = new GenericRepository<Loteria>(new LotoContext());
+            db = new LotoContext();
             Combinations = new ObservableCollection<Combination>();
-            Loterias = this.LoteriaRepository.GetAll();
+            Loterias = this.db.Loteria.ToList();
         }
 
         public void AddToCollection(int puntos, string jugada)
@@ -73,14 +75,10 @@ namespace MVVM_firstApp.Pages
         {
             if (Combinations.Count > 0)
             {
-                //TODO:
-                //get the selected loteria
-                //method in which I will pass the selcted loteria and the combinations
-                //if the method can succesfully add the values to the database 
-                //RemoveAllItems();
-                //else continue
+                bool sucess = databaseOperations.AddToDabataseAndPrint(Combinations, SelectedLoteria);
+                if(sucess) RemoveAllItems();
+                //else show a message saying why it couldn't add the values to the database 
             }
-            throw new NotImplementedException();
             //TODO: Add all the items on the collection to a database, and if suscesfull print a receipt
         }
 

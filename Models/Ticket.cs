@@ -6,7 +6,7 @@ namespace MVVM_firstApp.Models
     public class Ticket
     {
         public int TicketId { get; set; }
-        public int PIN { get; set; }
+        public string PIN { get; set; }
         public bool Cancelled { get; set; }
         public DateTime? DateCreated { get; set; }
 
