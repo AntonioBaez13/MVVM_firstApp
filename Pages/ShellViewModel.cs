@@ -1,6 +1,5 @@
 ﻿using MVVM_firstApp.Models;
 using Stylet;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -73,7 +72,7 @@ namespace MVVM_firstApp.Pages
 
         public void AddValuesAndPrint()
         {
-            if (Combinations.Count > 0)
+            if (Combinations.Count > 0 && SelectedLoteria.Name != null)
             {
                 bool sucess = databaseOperations.AddToDabataseAndPrint(Combinations, SelectedLoteria);
                 if(sucess) RemoveAllItems();

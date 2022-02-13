@@ -18,6 +18,16 @@ namespace MVVM_firstApp.Models
             modelBuilder.Entity<TicketJugada>()
                 .HasKey(tj => new { tj.TicketId, tj.JugadaId });
 
+            modelBuilder.Entity<TicketJugada>()
+                .HasOne(t => t.Ticket)
+                .WithMany(t => t.TicketJugada)
+                .HasForeignKey(t => t.TicketId);
+
+            modelBuilder.Entity<TicketJugada>()
+                .HasOne(j => j.Jugada)
+                .WithMany(j => j.TicketJugada)
+                .HasForeignKey(j => j.JugadaId);
+
             modelBuilder.Entity<Jugada>()
                 .HasOne(l => l.Loteria)
                 .WithMany(l => l.Jugadas)
