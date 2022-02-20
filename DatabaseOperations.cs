@@ -7,17 +7,10 @@ namespace MVVM_firstApp
 {
     public class DatabaseOperations
     {
-        private readonly LotoContext db;
-
-        public DatabaseOperations()
-        {
-            db = new LotoContext();
-        }
-
         public bool AddToDabataseAndPrint(IEnumerable<Combination> combinations, Loteria selectedLoteria)
         {
             string pin = CreateRandomPin(8);
-            using (db)
+            using (LotoContext db = new LotoContext())
             {
 
                 Ticket ticket = new()
@@ -45,13 +38,7 @@ namespace MVVM_firstApp
                             Date = DateTime.Now,
                         };
                         db.Jugada.Add(jugada);
-                    }
-                    else if (jugada.Repeated + combination.Puntos > 5 || combination.Jugada.Length == 4)
-                    {
-                        //if the sum exceeds 5 (max) or is a combination of 2 numbers do not add to db
-                        db.ChangeTracker.Clear();
-                        return false;
-                    }
+                    } //TODO: add extra else-if statement if the sum exceeds 5 (max) or is a combination of 2 numbers do not add to db
                     else
                     {
                         //update only the repeated column

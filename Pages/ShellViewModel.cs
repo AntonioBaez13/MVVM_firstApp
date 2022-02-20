@@ -75,10 +75,14 @@ namespace MVVM_firstApp.Pages
             if (Combinations.Count > 0 && SelectedLoteria.Name != null)
             {
                 bool sucess = databaseOperations.AddToDabataseAndPrint(Combinations, SelectedLoteria);
-                if(sucess) RemoveAllItems();
-                //else show a message saying why it couldn't add the values to the database 
+                if (sucess)
+                {
+                    RemoveAllItems();
+                    //TODO: Complete the printing behaviour
+                    //PrintBehaviour print = new PrintBehaviour(Combinations,1, 2, SelectedLoteria.Name);
+                    //print.PrintTicket();
+                }
             }
-            //TODO: Add all the items on the collection to a database, and if suscesfull print a receipt
         }
 
         public void RemoveSelectedItem()
