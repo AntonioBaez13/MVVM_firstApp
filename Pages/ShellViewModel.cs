@@ -21,6 +21,14 @@ namespace MVVM_firstApp.Pages
             set => SetAndNotify(ref _selectedLoteria, value);
         }
 
+        public ObservableCollection<int> TicketsFromToday { get; set; }
+        private int _selectedTicket;
+        public int SelectedTicket
+        {
+            get => _selectedTicket;
+            set => SetAndNotify(ref _selectedTicket, value);
+        }
+
         public ObservableCollection<Combination> Combinations { get; set; }
 
         private Combination _selectedCombination;
@@ -43,6 +51,7 @@ namespace MVVM_firstApp.Pages
         {
             db = new LotoContext();
             Combinations = new ObservableCollection<Combination>();
+            TicketsFromToday = new ObservableCollection<int>();
             Loterias = this.db.Loteria.ToList();
         }
 
@@ -63,6 +72,12 @@ namespace MVVM_firstApp.Pages
             SelectedCombination = Combinations.Last();
         }
 
+        public void AddTicketsFromToday(int value)
+        {
+            TicketsFromToday.Add(value);
+            SelectedTicket = TicketsFromToday.Last();
+        }
+
         //Text box to retrieve the sum of property puntos value
         public void SumPuntos()
         {
@@ -74,12 +89,13 @@ namespace MVVM_firstApp.Pages
         {
             if (Combinations.Count > 0 && SelectedLoteria.Name != null)
             {
-                bool sucess = databaseOperations.AddToDabataseAndPrint(Combinations, SelectedLoteria);
-                if (sucess)
+                var sucess = databaseOperations.AddToDabataseAndPrint(Combinations, SelectedLoteria);
+                if (sucess.trackTicketId > 0)
                 {
                     RemoveAllItems();
+                    AddTicketsFromToday(sucess.trackTicketId);
                     //TODO: Complete the printing behaviour
-                    //PrintBehaviour print = new PrintBehaviour(Combinations,1, 2, SelectedLoteria.Name);
+                    //PrintBehaviour print = new PrintBehaviour(Combinations, sucess.trackPin, success.trackTicketId, SelectedLoteria.Name);
                     //print.PrintTicket();
                 }
             }
