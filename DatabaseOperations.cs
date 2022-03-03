@@ -68,5 +68,19 @@ namespace MVVM_firstApp
             }
             return s;
         }
+
+        public IEnumerable<Combination> CopyTicket (int ticketId)
+        {
+            List<Combination> copiOfTicket = db.TicketJugada
+                .Where(t => t.TicketId == ticketId)
+                .Select(x => new Combination()
+                { 
+                    Jugada = x.Jugada.Number, 
+                    Puntos = x.Points 
+                })
+                .ToList();
+
+            return copiOfTicket;
+        }
     }
 }
