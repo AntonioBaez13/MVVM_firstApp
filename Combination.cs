@@ -7,15 +7,15 @@ namespace MVVM_firstApp
         private int _puntos;
         public int Puntos
         {
-            get { return _puntos; }
-            set { SetAndNotify(ref _puntos, value); }
+            get => _puntos;
+            set => SetAndNotify(ref _puntos, value);
         }
 
         private string _jugada;
         public string Jugada
         {
-            get { return _jugada; }
-            set { SetAndNotify(ref _jugada, value); }
+            get => _jugada;
+            set => SetAndNotify(ref _jugada, value);
         }
 
     }

@@ -85,7 +85,7 @@
                     <!-- Column 4, 5 -->
                     <DockPanel Grid.Column="4" Grid.Row="2" Grid.ColumnSpan="2" Margin="0,0,0,5">
                         <Label Content="Ticket: "/>
-                        <TextBox Name="TicketId" TextWrapping="Wrap" PreviewTextInput="NoLettersAllowed"/>
+                        <TextBox Text="{Binding TicketToCopy}" TextWrapping="Wrap" PreviewTextInput="NoLettersAllowed"/>
                     </DockPanel>
                     <ListView x:Name="TodaysTickets"  ItemsSource="{Binding TicketsFromToday}"
                               SelectedItem="{Binding SelectedTicket}"  Margin="0, 0, 0, 10"

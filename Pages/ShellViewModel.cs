@@ -45,6 +45,12 @@ namespace MVVM_firstApp.Pages
             set => SetAndNotify(ref _puntosTotalSum, value);
         }
 
+        private int _ticketToCopy;
+        public int TicketToCopy
+        {
+            get => _ticketToCopy;
+            set => SetAndNotify(ref _ticketToCopy, value);
+        }
         private double TotalSum { get; set; }
 
         public ShellViewModel()
@@ -97,6 +103,18 @@ namespace MVVM_firstApp.Pages
                     //TODO: Complete the printing behaviour
                     //PrintBehaviour print = new PrintBehaviour(Combinations, sucess.trackPin, success.trackTicketId, SelectedLoteria.Name);
                     //print.PrintTicket();
+                }
+            }
+        }
+
+        public void CopyTicket()
+        {
+            if (TicketToCopy > 0 && Combinations.Count == 0)
+            {
+                IEnumerable<Combination> copiedTicket = databaseOperations.CopyTicket(TicketToCopy);
+                foreach(Combination comb in copiedTicket)
+                {
+                    Combinations.Add(comb);
                 }
             }
         }
