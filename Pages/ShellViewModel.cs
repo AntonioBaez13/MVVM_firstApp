@@ -1,5 +1,6 @@
 ﻿using MVVM_firstApp.Models;
 using Stylet;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -27,6 +28,13 @@ namespace MVVM_firstApp.Pages
         {
             get => _selectedTicket;
             set => SetAndNotify(ref _selectedTicket, value);
+        }
+
+        public FullTicketData _completeTicketInfo;
+        public FullTicketData CompleteTicketInfo
+        {
+            get => _completeTicketInfo;
+            set => SetAndNotify(ref _completeTicketInfo, value);
         }
 
         public ObservableCollection<Combination> Combinations { get; set; }
@@ -111,11 +119,37 @@ namespace MVVM_firstApp.Pages
         {
             if (TicketToCopy > 0 && Combinations.Count == 0)
             {
-                IEnumerable<Combination> copiedTicket = databaseOperations.CopyTicket(TicketToCopy);
+                IEnumerable<Combination> copiedTicket = databaseOperations.GetCombinations(TicketToCopy);
                 foreach(Combination comb in copiedTicket)
                 {
                     Combinations.Add(comb);
                 }
+            }
+        }
+
+        //TODO I want to run this method each time the selected Ticket has changed so that I can set up the value of the property that the 
+        //New ListView will need to pull the data from 
+        //TODO Find an appropiate name for this method
+        public void Xxx()
+        {
+            //This method will set the property object from where my listview needs to take all the data
+            if(SelectedTicket > 0)
+            {
+                IEnumerable<Combination> ticketCombinations = databaseOperations.GetCombinations(SelectedTicket);
+                string loteriaName = databaseOperations.GetLoteriaName(SelectedTicket);
+                DateTimeOffset dateTime= databaseOperations.GetDateCreated(SelectedTicket);
+                string dayOfWeek = dateTime.DayOfWeek.ToString();
+                string date = dateTime.Date.ToString("D");
+                string time = dateTime.TimeOfDay.ToString(@"hh\:mm");
+                CompleteTicketInfo = new()
+                {
+                    DayOfWeek = dayOfWeek,
+                    Date = date,
+                    Time = time,
+                    TicketNo = SelectedTicket,
+                    LoteriaName = loteriaName,
+                    Combinations = ticketCombinations
+                };
             }
         }
 

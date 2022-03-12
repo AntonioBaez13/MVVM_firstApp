@@ -85,17 +85,49 @@
                     <!-- Column 4, 5 -->
                     <DockPanel Grid.Column="4" Grid.Row="2" Grid.ColumnSpan="2" Margin="0,0,0,5">
                         <Label Content="Ticket: "/>
-                        <TextBox Text="{Binding TicketToCopy}" TextWrapping="Wrap" PreviewTextInput="NoLettersAllowed"/>
+                        <TextBox Text="{Binding TicketToCopy}" TextWrapping="Wrap" 
+                                 VerticalAlignment="Center" PreviewTextInput="NoLettersAllowed"/>
                     </DockPanel>
-                    <ListView x:Name="TodaysTickets"  ItemsSource="{Binding TicketsFromToday}"
+                    <ListView ItemsSource="{Binding TicketsFromToday}"
                               SelectedItem="{Binding SelectedTicket}"  Margin="0, 0, 0, 10"
-                              Grid.Column="4" Grid.ColumnSpan="2" 
+                              Grid.Column="4" Grid.ColumnSpan="2"
                               Grid.Row="3" Grid.RowSpan="2" />
                     <ComboBox ItemsSource="{Binding Loterias}" SelectedValue="{Binding SelectedLoteria}" 
                               Width="150" DisplayMemberPath="Name"  Margin="0,0,0,10"
                               Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="5"/>
                     <Button Content="Copiar" Grid.Column="4" Grid.Row="6"
                             Command="{s:Action CopyTicket}"/>
+                    <!-- Column 6-->
+                    <ListView Grid.Column="6" Grid.Row="3" Grid.RowSpan="2" Margin="20, 0"
+                              ItemsSource="{Binding CompleteTicketInfo}" FontSize="15" FontWeight="Black" 
+                              FontFamily="Times New Roman">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="Focusable" Value="False"></Setter>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListViewItem HorizontalContentAlignment="Center">
+                            <TextBlock Text="Sabado 12/03/2022"/>
+                        </ListViewItem>
+                        <ListViewItem HorizontalContentAlignment="Center">
+                            <TextBlock Text="14:38:00"/>
+                        </ListViewItem>
+                        <ListViewItem HorizontalContentAlignment="Center">
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Ticket No: "/>
+                                <TextBlock VerticalAlignment="Center" Text="4551351 54231 1215"/>
+                            </StackPanel>
+                        </ListViewItem>
+                        <ListViewItem HorizontalContentAlignment="Center">
+                            <DockPanel>
+                                <Label Content="Loteria: " />
+                                <TextBlock VerticalAlignment="Center" Text="Nacional Tarde Noche"/>
+                            </DockPanel>
+                        </ListViewItem>
+                        <ListViewItem HorizontalContentAlignment="Center">
+                            <TextBlock Text="1 al 23"/>
+                        </ListViewItem>
+                    </ListView>
                 </Grid>
             </TabItem>
             <TabItem Header="Reportes" Width="70">

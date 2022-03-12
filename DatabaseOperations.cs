@@ -16,7 +16,7 @@ namespace MVVM_firstApp
             {
                 PIN = pin,
                 Cancelled = false,
-                DateCreated = DateTime.Now
+                DateCreated = DateTimeOffset.Now
             };
             db.Ticket.Add(ticket);
 
@@ -69,7 +69,7 @@ namespace MVVM_firstApp
             return s;
         }
 
-        public IEnumerable<Combination> CopyTicket (int ticketId)
+        public IEnumerable<Combination> GetCombinations (int ticketId)
         {
             List<Combination> copiOfTicket = db.TicketJugada
                 .Where(t => t.TicketId == ticketId)
@@ -81,6 +81,16 @@ namespace MVVM_firstApp
                 .ToList();
 
             return copiOfTicket;
+        }
+
+        public DateTimeOffset GetDateCreated(int ticketId)
+        {
+            return db.Ticket.Where(t => t.Id == ticketId).Select(x => x.DateCreated).FirstOrDefault();
+        }
+
+        public string GetLoteriaName(int ticketId)
+        {
+            return db.TicketJugada.Where(t => t.TicketId == ticketId).Select(X => X.Jugada.Loteria.Name).FirstOrDefault();
         }
     }
 }

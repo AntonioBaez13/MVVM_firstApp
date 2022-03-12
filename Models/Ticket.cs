@@ -8,7 +8,7 @@ namespace MVVM_firstApp.Models
         public int Id { get; set; }
         public string PIN { get; set; }
         public bool Cancelled { get; set; }
-        public DateTime? DateCreated { get; set; }
+        public DateTimeOffset DateCreated { get; set; }
 
         public virtual ICollection<TicketJugada> TicketJugada { get; set; }
     }
