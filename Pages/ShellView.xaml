@@ -104,24 +104,29 @@
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="Focusable" Value="False"></Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="False">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                    </Trigger>
+                                </Style.Triggers>
                             </Style>
                         </ListView.ItemContainerStyle>
                         <ListViewItem HorizontalContentAlignment="Center">
-                            <TextBlock Text="Sabado 12/03/2022"/>
+                            <TextBlock Text="{Binding CompleteTicketInfo.CompleteDayandDate}"/>
                         </ListViewItem>
                         <ListViewItem HorizontalContentAlignment="Center">
-                            <TextBlock Text="14:38:00"/>
+                            <TextBlock Text="{Binding CompleteTicketInfo.Time}"/>
                         </ListViewItem>
                         <ListViewItem HorizontalContentAlignment="Center">
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="Ticket No: "/>
-                                <TextBlock VerticalAlignment="Center" Text="4551351 54231 1215"/>
+                                <TextBlock VerticalAlignment="Center" Text="{Binding CompleteTicketInfo.TicketNo}"/>
                             </StackPanel>
                         </ListViewItem>
                         <ListViewItem HorizontalContentAlignment="Center">
                             <DockPanel>
                                 <Label Content="Loteria: " />
-                                <TextBlock VerticalAlignment="Center" Text="Nacional Tarde Noche"/>
+                                <TextBlock VerticalAlignment="Center" Text="{Binding CompleteTicketInfo.LoteriaName}"/>
                             </DockPanel>
                         </ListViewItem>
                         <ListViewItem HorizontalContentAlignment="Center">

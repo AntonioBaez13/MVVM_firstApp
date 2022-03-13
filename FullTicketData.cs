@@ -16,5 +16,7 @@ namespace MVVM_firstApp
 
         public IEnumerable<Combination> Combinations { get; set; }
 
+        public string CompleteDayandDate => $"{DayOfWeek}, {Date}";
+
     }
 }

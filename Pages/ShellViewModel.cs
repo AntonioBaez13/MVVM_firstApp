@@ -27,7 +27,13 @@ namespace MVVM_firstApp.Pages
         public int SelectedTicket
         {
             get => _selectedTicket;
-            set => SetAndNotify(ref _selectedTicket, value);
+            set
+            {
+                if (SetAndNotify(ref _selectedTicket, value))
+                {
+                    ExtracTicketInfo();
+                }
+            }
         }
 
         public FullTicketData _completeTicketInfo;
@@ -127,30 +133,23 @@ namespace MVVM_firstApp.Pages
             }
         }
 
-        //TODO I want to run this method each time the selected Ticket has changed so that I can set up the value of the property that the 
-        //New ListView will need to pull the data from 
-        //TODO Find an appropiate name for this method
-        public void Xxx()
+        public void ExtracTicketInfo()
         {
-            //This method will set the property object from where my listview needs to take all the data
-            if(SelectedTicket > 0)
+            IEnumerable<Combination> ticketCombinations = databaseOperations.GetCombinations(SelectedTicket);
+            string loteriaName = databaseOperations.GetLoteriaName(SelectedTicket);
+            DateTimeOffset dateTime = databaseOperations.GetDateCreated(SelectedTicket);
+            string dayOfWeek = dateTime.DayOfWeek.ToString();
+            string date = dateTime.Date.ToString("D");
+            string time = dateTime.TimeOfDay.ToString(@"hh\:mm");
+            CompleteTicketInfo = new()
             {
-                IEnumerable<Combination> ticketCombinations = databaseOperations.GetCombinations(SelectedTicket);
-                string loteriaName = databaseOperations.GetLoteriaName(SelectedTicket);
-                DateTimeOffset dateTime= databaseOperations.GetDateCreated(SelectedTicket);
-                string dayOfWeek = dateTime.DayOfWeek.ToString();
-                string date = dateTime.Date.ToString("D");
-                string time = dateTime.TimeOfDay.ToString(@"hh\:mm");
-                CompleteTicketInfo = new()
-                {
-                    DayOfWeek = dayOfWeek,
-                    Date = date,
-                    Time = time,
-                    TicketNo = SelectedTicket,
-                    LoteriaName = loteriaName,
-                    Combinations = ticketCombinations
-                };
-            }
+                DayOfWeek = dayOfWeek,
+                Date = date,
+                Time = time,
+                TicketNo = SelectedTicket,
+                LoteriaName = loteriaName,
+                Combinations = ticketCombinations
+            };
         }
 
         public void RemoveSelectedItem()
