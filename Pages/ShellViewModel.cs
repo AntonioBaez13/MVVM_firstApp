@@ -12,7 +12,6 @@ namespace MVVM_firstApp.Pages
     {
         public DatabaseOperations databaseOperations = new DatabaseOperations(); 
 
-        private readonly LotoContext db;
         public IEnumerable<Loteria> Loterias { get; set; }
 
         private Loteria _selectedLoteria;
@@ -69,10 +68,9 @@ namespace MVVM_firstApp.Pages
 
         public ShellViewModel()
         {
-            db = new LotoContext();
             Combinations = new ObservableCollection<Combination>();
             TicketsFromToday = new ObservableCollection<int>();
-            Loterias = this.db.Loteria.ToList();
+            Loterias = databaseOperations.GetAllLoterias();
         }
 
         public void AddToCollection(int puntos, string jugada)

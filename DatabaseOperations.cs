@@ -69,6 +69,11 @@ namespace MVVM_firstApp
             return s;
         }
 
+        public IEnumerable<Loteria> GetAllLoterias()
+        {
+            return db.Loteria.ToList();
+        }
+
         public IEnumerable<Combination> GetCombinations (int ticketId)
         {
             List<Combination> copiOfTicket = db.TicketJugada
