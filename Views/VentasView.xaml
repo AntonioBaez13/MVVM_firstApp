@@ -1,0 +1,159 @@
+﻿<UserControl x:Class="MVVM_firstApp.Views.VentasView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MVVM_firstApp.Views"
+             xmlns:s="https://github.com/canton7/Stylet"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="750">
+    <Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="20"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="20"/>
+            </Grid.RowDefinitions>
+            <!--Column 1, 2 and 3-->
+            <TextBox IsEnabled="False" IsReadOnly="True" 
+                             Grid.Column="1" Grid.Row="1" Margin="5,0"
+                             TextWrapping="Wrap" Text="{Binding PuntosTotalSum}" TextAlignment="Center" 
+                             FontWeight="Bold" FontSize="18" Background="Black" 
+                             Foreground="#FF23EE54"/>
+            <DockPanel Grid.Row="2" Grid.Column="1"  Grid.ColumnSpan="3">
+                <TextBox Name="PuntosInput" PreviewTextInput="NoLettersAllowed" 
+                             Width="85" TextWrapping="Wrap" Margin="5" MaxLength="1" 
+                             KeyDown="PuntosInput_KeyDown"/>
+                <Label Content="Puntos"/>
+            </DockPanel>
+            <DockPanel Grid.Row="3" Grid.Column="1"  Grid.ColumnSpan="3">
+                <TextBox Name="JugadaInput" PreviewTextInput="NoLettersAllowed" 
+                             Width="85" TextWrapping="Wrap" Margin="5" MaxLength="4"
+                             KeyDown="JugadaInput_KeyDown" />
+                <Label Content="Num, Pale, Trip" 
+                           Grid.Column="3" Grid.Row="3" />
+            </DockPanel>
+            <ListView x:Name="VistaPrevia" Height="193" Width="210" Margin="0,0,20,10"
+                              Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="3"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                              ItemsSource="{Binding Combinations}" SelectedItem="{Binding SelectedCombination}">
+                <ListView.Resources>
+                    <Style TargetType="GridViewColumnHeader">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                    </Style>
+                </ListView.Resources>
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Width="50" DisplayMemberBinding="{Binding Puntos}"/>
+                        <GridViewColumn Width="70">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Label Content="a el"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn  Width="90" DisplayMemberBinding="{Binding Jugada}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <Button Content="Imprimir" Margin="0,0,20,10" Height="30"
+                            Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="5" 
+                            Command="{s:Action AddValuesAndPrint}" />
+            <Button Content="-" Grid.Column="1" Grid.Row="6" 
+                            Command="{s:Action RemoveSelectedItem}" />
+            <Button Content="Cancelar" Margin="10,0,20,0"
+                            Grid.Column="2" Grid.Row="6" Grid.ColumnSpan="2" 
+                            Command="{s:Action RemoveAllItems}" />
+            <!-- Column 4, 5 -->
+            <DockPanel Grid.Column="4" Grid.Row="2" Grid.ColumnSpan="2" Margin="0,0,0,5">
+                <Label Content="Ticket: "/>
+                <TextBox Text="{Binding TicketToCopy}" TextWrapping="Wrap" 
+                                 VerticalAlignment="Center" PreviewTextInput="NoLettersAllowed"/>
+            </DockPanel>
+            <ListView ItemsSource="{Binding TicketsFromToday}"
+                              SelectedItem="{Binding SelectedTicket}"  Margin="0, 0, 0, 10"
+                              Grid.Column="4" Grid.ColumnSpan="2"
+                              Grid.Row="3" Grid.RowSpan="2" />
+            <ComboBox ItemsSource="{Binding Loterias}" SelectedValue="{Binding SelectedLoteria}" 
+                              Width="150" DisplayMemberPath="Name"  Margin="0,0,0,10"
+                              Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="5"/>
+            <Button Content="Copiar" Grid.Column="4" Grid.Row="6"
+                            Command="{s:Action CopyTicket}"/>
+            <!-- Column 6-->
+            <ListView Grid.Column="6" Grid.Row="3" Grid.RowSpan="2" Margin="20, 0"
+                              ItemsSource="{Binding CompleteTicketInfo}" FontSize="15" FontWeight="Black" 
+                              FontFamily="Times New Roman"  Height="230" Width="280" Background="PaleTurquoise">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Focusable" Value="False"></Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="False">
+                                <Setter Property="IsEnabled" Value="False"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListViewItem HorizontalContentAlignment="Center">
+                    <TextBlock Text="{Binding CompleteTicketInfo.CompleteDayandDate}"/>
+                </ListViewItem>
+                <ListViewItem HorizontalContentAlignment="Center">
+                    <TextBlock Text="{Binding CompleteTicketInfo.Time}"/>
+                </ListViewItem>
+                <ListViewItem HorizontalContentAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Ticket No: "/>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding CompleteTicketInfo.TicketNo}"/>
+                    </StackPanel>
+                </ListViewItem>
+                <ListViewItem HorizontalContentAlignment="Center">
+                    <DockPanel>
+                        <Label Content="Loteria: " />
+                        <TextBlock VerticalAlignment="Center" Text="{Binding CompleteTicketInfo.LoteriaName}"/>
+                    </DockPanel>
+                </ListViewItem>
+                <ListViewItem HorizontalContentAlignment="Center">
+                    <ListView ItemsSource="{Binding CompleteTicketInfo.Combinations}">
+                        <ListView.Resources>
+                            <Style TargetType="GridViewColumnHeader">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </Style>
+                        </ListView.Resources>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.View>
+                            <GridView >
+                                <GridViewColumn Width="50" DisplayMemberBinding="{Binding Path=Puntos}"/>
+                                <GridViewColumn Width="70">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="a el" HorizontalAlignment="Center"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn  Width="90" DisplayMemberBinding="{Binding Jugada}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </ListViewItem>
+            </ListView>
+        </Grid>
+    </Grid>
+</UserControl>
