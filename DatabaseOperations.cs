@@ -1,4 +1,5 @@
 ﻿using MVVM_firstApp.Models;
+using MVVM_firstApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +35,7 @@ namespace MVVM_firstApp
                         Number = combination.Jugada,
                         Repeated = combination.Puntos,
                         LoteriaId = selectedLoteria.Id,
-                        Date = DateTime.Now,
+                        Date = DateTime.UtcNow.Date,
                     };
                     db.Jugada.Add(jugada);
                 } //TODO: add extra else-if statement if the sum exceeds 5 (max) or is a combination of 2 numbers do not add to db
@@ -74,14 +75,14 @@ namespace MVVM_firstApp
             return db.Loteria.ToList();
         }
 
-        public IEnumerable<Combination> GetCombinations (int ticketId)
+        public IEnumerable<Combination> GetCombinations(int ticketId)
         {
             List<Combination> copiOfTicket = db.TicketJugada
                 .Where(t => t.TicketId == ticketId)
                 .Select(x => new Combination()
-                { 
-                    Jugada = x.Jugada.Number, 
-                    Puntos = x.Points 
+                {
+                    Jugada = x.Jugada.Number,
+                    Puntos = x.Points
                 })
                 .ToList();
 
@@ -96,6 +97,26 @@ namespace MVVM_firstApp
         public string GetLoteriaName(int ticketId)
         {
             return db.TicketJugada.Where(t => t.TicketId == ticketId).Select(X => X.Jugada.Loteria.Name).FirstOrDefault();
+        }
+
+        public int GetSumOfValuesRepeated(DateTime date)
+        {
+            return db.Jugada.Where(j => j.Date == date).Select(x => x.Repeated).Sum();
+        }
+
+        public List<TicketJugadaViewModel> GetTicketJugadaViewModel(DateTime date, string number, int loteriaId)
+        {
+            int jugadaId = db.Jugada.Where(j => j.Date == date && j.Number == number && j.LoteriaId == loteriaId)
+                .Select(x => x.Id).FirstOrDefault();
+            List<TicketJugadaViewModel> ticketJugadaViewModel = db.TicketJugada.Where(tj => tj.JugadaId == jugadaId)
+                .Select(x => new TicketJugadaViewModel()
+                {
+                    TicketId = x.TicketId,
+                    Points = x.Points
+                })
+                .ToList();
+
+            return ticketJugadaViewModel;
         }
     }
 }

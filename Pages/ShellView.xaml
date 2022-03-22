@@ -4,40 +4,18 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:s="https://github.com/canton7/Stylet"
-        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:MVVM_firstApp.Pages"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance local:ShellViewModel}"
+        ResizeMode="NoResize"
         Title="Stylet Project" Height="450" Width="750" Background="#FFE4E4E4">
     <Grid>
-        <TabControl>
-            <TabItem Header="Venta" Width="70">
-                <ContentControl s:View.Model="{Binding Ventas}"/>
-            </TabItem>
-            <TabItem Header="Reportes" Width="70">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="20" />
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="20" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="20" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="20" />
-                    </Grid.RowDefinitions>
-                    <DatePicker x:Name="Fecha" Grid.Column="1" Grid.Row="1"
-                                SelectedDate="{x:Static sys:DateTime.Now}"
-                                FirstDayOfWeek="Monday" IsTodayHighlighted="True"
-                                SelectedDateFormat="Long"/>
-                    <Button x:Name="ReporteDeVentas" Content="Reporte De Ventas" Grid.Column="1" 
-                            Grid.Row="2" Margin="0,5"/>
-                    <TextBox x:Name="Reporte" Grid.Column="2" Grid.Row="1" Margin="10,0"
-                             Grid.RowSpan="2" TextWrapping="Wrap" Width="283" />
-                </Grid>
-            </TabItem>
+        <TabControl ItemsSource="{Binding Items}" SelectedItem="{Binding ActiveItem}" DisplayMemberPath="DisplayName">
+            <TabControl.ContentTemplate>
+                <DataTemplate>
+                    <ContentControl s:View.Model="{Binding}" IsTabStop="False"/>
+                </DataTemplate>
+            </TabControl.ContentTemplate>
         </TabControl>
     </Grid>
 </Window>

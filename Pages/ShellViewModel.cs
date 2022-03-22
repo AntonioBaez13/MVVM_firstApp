@@ -3,13 +3,14 @@ using Stylet;
 
 namespace MVVM_firstApp.Pages
 {
-    public class ShellViewModel : Screen
+    public class ShellViewModel : Conductor<IScreen>.Collection.OneActive 
     {
-        public VentasViewModel Ventas { get; private set; }
-
-        public ShellViewModel()
+        public ShellViewModel(VentasViewModel ventas, ReportesViewModel reportes)
         {
-            Ventas = new VentasViewModel();
+            this.Items.Add(ventas);
+            this.Items.Add(reportes);
+
+            this.ActiveItem = ventas;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace MVVM_firstApp.ViewModels
 {
     public class VentasViewModel : Screen
     {
-        public DatabaseOperations databaseOperations = new DatabaseOperations();
+        DatabaseOperations databaseOperations = new DatabaseOperations();
 
         public IEnumerable<Loteria> Loterias { get; set; }
 
@@ -68,6 +68,7 @@ namespace MVVM_firstApp.ViewModels
 
         public VentasViewModel()
         {
+            this.DisplayName = "Ventas";
             Combinations = new ObservableCollection<Combination>();
             TicketsFromToday = new ObservableCollection<int>();
             Loterias = databaseOperations.GetAllLoterias();
