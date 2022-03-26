@@ -100,7 +100,7 @@ namespace MVVM_firstApp.ViewModels
         public void AddValuesAndPrint()
         {
             if (Combinations.Count > 0
-                && SelectedLoteria.Name != null)
+                && SelectedLoteria != null)
             {
                 (string trackPin, int trackTicketId) = DatabaseOperations.AddToDabataseAndPrint(Combinations, SelectedLoteria);
                 if (trackTicketId > 0)

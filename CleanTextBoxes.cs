@@ -7,6 +7,7 @@ namespace MVVM_firstApp
     {
         public static string CleanJugadaInput(string jugada)
         {
+            jugada = Regex.Replace(jugada, @"\s+", "");
             int size = jugada.Length;
 
             switch (size)
@@ -25,12 +26,12 @@ namespace MVVM_firstApp
                     break;
             }
 
-            throw new ArgumentException("Jugada No Aceptada");
+            return "0000";
         }
 
         public static int CleanPuntosInput(string text)
         {
-            return int.TryParse(text, out int puntos) ? puntos : throw new ArgumentException("Puntos no Aceptados ");
+            return int.TryParse(text, out int puntos) ? puntos : 1;
         }
         private static string OrderCombination(string jugada)
         {
