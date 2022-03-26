@@ -29,7 +29,8 @@
         <Button Command="{s:Action FindTicketsWithJugada}" Content="Buscar Tickets con Jugada"
                 Grid.Column="1" Grid.Row="3" Margin="0,5"/>
         <TextBox Text="{Binding ReporteText}" Grid.Column="2" Grid.Row="1" Margin="10,0,0,0"
-                 Grid.RowSpan="2" TextWrapping="Wrap" Width="283"/>
+                 Grid.RowSpan="2" TextWrapping="Wrap" Width="330" IsReadOnly="True"
+                 FontSize="14" FontWeight="Bold"/>
         <DockPanel Grid.Column="2" Grid.Row="3">
             <DockPanel >
                 <Label Content="Loteria: "/>
@@ -42,19 +43,14 @@
                          VerticalAlignment="Center" PreviewTextInput="NoLettersAllowed"/>
             </DockPanel>
         </DockPanel>
-        <ListView  Margin="0,10" Grid.Column="2" Grid.Row="4" Width="130"
-                   ItemsSource="{Binding TicketPuntos}">
-            <ListView.Resources>
-                <Style TargetType="GridViewColumnHeader">
+        <DataGrid HeadersVisibility="Column" Width="130" Margin="0,10" Grid.Column="2" Grid.Row="4" 
+                  ItemsSource="{Binding TicketPuntos}" IsReadOnly="True">
+            <DataGrid.Resources>
+                <Style TargetType="DataGridColumnHeader">
                     <Setter Property="IsEnabled" Value="False"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                 </Style>
-            </ListView.Resources>
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="TicketNo" DisplayMemberBinding="{Binding TicketId}"/>
-                    <GridViewColumn Header="Puntos" DisplayMemberBinding="{Binding Points}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+            </DataGrid.Resources>
+        </DataGrid>
     </Grid>
 </UserControl>

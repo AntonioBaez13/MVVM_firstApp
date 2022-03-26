@@ -10,8 +10,6 @@ namespace MVVM_firstApp.Views
     /// </summary>
     public partial class VentasView : UserControl
     {
-        CleanTextBoxes cleanText = new CleanTextBoxes();
-
         public VentasView()
         {
             InitializeComponent();
@@ -23,7 +21,6 @@ namespace MVVM_firstApp.Views
             e.Handled = regex.IsMatch(e.Text);
         }
 
-        // Method to handle what happens when Enter is pressed on the textbox
         private void PuntosInput_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter && string.IsNullOrEmpty(JugadaInput.Text))
@@ -37,7 +34,6 @@ namespace MVVM_firstApp.Views
             }
         }
 
-        // Method to handle what happens when Enter is pressed on the textbox
         private void JugadaInput_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter && string.IsNullOrEmpty(PuntosInput.Text))
@@ -53,8 +49,9 @@ namespace MVVM_firstApp.Views
 
         private void AddValuesToCollection()
         {
-            int puntos = cleanText.CleanPuntosInput(PuntosInput.Text);
-            string jugada = cleanText.CleanJugadaInput(JugadaInput.Text);
+            //TODO: Validate so that adding an space doesn't throw an exception
+            int puntos = CleanTextBoxes.CleanPuntosInput(PuntosInput.Text);
+            string jugada = CleanTextBoxes.CleanJugadaInput(JugadaInput.Text);
 
             if (jugada.Length > 2)
             {
@@ -67,12 +64,10 @@ namespace MVVM_firstApp.Views
 
             ((VentasViewModel)DataContext).AddToCollection(puntos, jugada);
 
-            //Scroll into view of the selected Item (Might Change)
             VistaPrevia.ScrollIntoView(VistaPrevia.SelectedItem);
             EmptyTextBoxes();
         }
 
-        //Clean the text boxes after the items have been added to the collection 
         private void EmptyTextBoxes()
         {
             PuntosInput.Clear();

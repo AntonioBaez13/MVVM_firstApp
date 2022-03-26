@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Printing;
 
@@ -20,7 +19,7 @@ namespace MVVM_firstApp
             this.loteriaName = loteriaName;
         }
 
-        public void PrintTicket()
+        public static void PrintTicket()
         {
 
         }

@@ -1,5 +1,4 @@
-﻿using MVVM_firstApp.Models;
-using Stylet;
+﻿using Stylet;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,15 +7,14 @@ namespace MVVM_firstApp.ViewModels
 {
     public class ReportesViewModel : Screen
     {
-        DatabaseOperations databaseOperations = new DatabaseOperations();
-        private Loteria _loteriaToSearch;
+        private LoteriaViewModel _loteriaToSearch;
         private DateTime _selectedDate;
         private string _reporteText;
 
         public ObservableCollection<TicketJugadaViewModel> TicketPuntos { get; set; }
-        public IEnumerable<Loteria> Loterias { get; set; }
+        public IEnumerable<LoteriaViewModel> Loterias { get; set; }
         public string JugadaToSearch { get; set; }
-        public Loteria LoteriaToSearch
+        public LoteriaViewModel LoteriaToSearch
         {
             get => _loteriaToSearch;
             set => SetAndNotify(ref _loteriaToSearch, value);
@@ -35,30 +33,32 @@ namespace MVVM_firstApp.ViewModels
         public ReportesViewModel()
         {
             TicketPuntos = new ObservableCollection<TicketJugadaViewModel>();
-            Loterias = databaseOperations.GetAllLoterias();
+            Loterias = DatabaseOperations.GetAllLoterias();
             SelectedDate = DateTime.Now.Date;
             this.DisplayName = "Reportes";
         }
 
         public void GetReporte()
         {
-            int totalSum = databaseOperations.GetSumOfValuesRepeated(SelectedDate);
+            int totalSum = DatabaseOperations.GetSumOfValuesRepeated(SelectedDate);
             ReporteText = $"El {SelectedDate.DayOfWeek} {SelectedDate:D} se vendio un total de {totalSum} euros";
         }
 
         public void FindTicketsWithJugada()
         {
             //Check if I can achieve this using Guard Properties
+            TicketPuntos.Clear();
+            ReporteText = "";
             if (!string.IsNullOrEmpty(JugadaToSearch) && LoteriaToSearch != null)
             {
-                List<TicketJugadaViewModel> x = databaseOperations.GetTicketJugadaViewModel(SelectedDate.Date, JugadaToSearch, LoteriaToSearch.Id);
-                if (x.Count == 0)
+                List<TicketJugadaViewModel> ticketJugadaRecords = DatabaseOperations.GetTicketJugadaViewModel(SelectedDate.Date, JugadaToSearch, LoteriaToSearch.Id);
+                if (ticketJugadaRecords.Count == 0)
                 {
                     ReporteText = $"El dia {SelectedDate:D} ningun ticket jugo la jugada especificada: ({JugadaToSearch}) en la ({LoteriaToSearch.Name})";
                 }
                 else
                 {
-                    foreach (TicketJugadaViewModel ticketPuntos in x)
+                    foreach (TicketJugadaViewModel ticketPuntos in ticketJugadaRecords)
                     {
                         TicketPuntos.Add(ticketPuntos);
                     }

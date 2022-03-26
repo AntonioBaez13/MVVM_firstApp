@@ -3,9 +3,9 @@ using System.Text.RegularExpressions;
 
 namespace MVVM_firstApp
 {
-    public class CleanTextBoxes
+    public static class CleanTextBoxes
     {
-        public string CleanJugadaInput(string jugada)
+        public static string CleanJugadaInput(string jugada)
         {
             int size = jugada.Length;
 
@@ -28,18 +28,11 @@ namespace MVVM_firstApp
             throw new ArgumentException("Jugada No Aceptada");
         }
 
-        public int CleanPuntosInput(string text)
+        public static int CleanPuntosInput(string text)
         {
-            if (int.TryParse(text, out int puntos))
-            {
-                return puntos;
-            }
-            else
-            {
-                throw new ArgumentException("Puntos no Aceptados ");
-            }
+            return int.TryParse(text, out int puntos) ? puntos : throw new ArgumentException("Puntos no Aceptados ");
         }
-        private string OrderCombination(string jugada)
+        private static string OrderCombination(string jugada)
         {
             //this regex splits a 3 or 4 char string, into two strings 
             string[] test = Regex.Split(jugada, "(?<=\\G..)");
