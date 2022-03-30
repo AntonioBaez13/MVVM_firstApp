@@ -9,6 +9,7 @@ namespace MVVM_firstApp.ViewModels
 {
     public class VentasViewModel : Screen
     {
+        private readonly IDatabaseOperations _databaseOperations;
         private LoteriaViewModel _selectedLoteria;
         private int _selectedTicket;
         private FullTicketData _completeTicketInfo;
@@ -58,12 +59,13 @@ namespace MVVM_firstApp.ViewModels
             set => SetAndNotify(ref _ticketToCopy, value);
         }
 
-        public VentasViewModel()
+        public VentasViewModel(IDatabaseOperations databaseOperations)
         {
             this.DisplayName = "Ventas";
+            _databaseOperations = databaseOperations;
             Combinations = new ObservableCollection<Combination>();
             TicketsFromToday = new ObservableCollection<int>();
-            Loterias = DatabaseOperations.GetAllLoterias();
+            Loterias = _databaseOperations.GetAllLoterias();
         }
 
         public void AddToCollection(int puntos, string jugada)
@@ -102,7 +104,7 @@ namespace MVVM_firstApp.ViewModels
             if (Combinations.Count > 0
                 && SelectedLoteria != null)
             {
-                (string trackPin, int trackTicketId) = DatabaseOperations.AddToDabataseAndPrint(Combinations, SelectedLoteria);
+                (string trackPin, int trackTicketId) = _databaseOperations.AddToDabataseAndPrint(Combinations, SelectedLoteria);
                 if (trackTicketId > 0)
                 {
                     RemoveAllItems();
@@ -118,7 +120,7 @@ namespace MVVM_firstApp.ViewModels
         {
             if (TicketToCopy > 0 && Combinations.Count == 0)
             {
-                IEnumerable<Combination> copiedTicket = DatabaseOperations.GetCombinations(TicketToCopy);
+                IEnumerable<Combination> copiedTicket = _databaseOperations.GetCombinations(TicketToCopy);
                 foreach (Combination comb in copiedTicket)
                 {
                     Combinations.Add(comb);
@@ -128,9 +130,9 @@ namespace MVVM_firstApp.ViewModels
 
         public void RetrieveTicketInfo()
         {
-            IEnumerable<Combination> ticketCombinations = DatabaseOperations.GetCombinations(SelectedTicket);
-            string loteriaName = DatabaseOperations.GetLoteriaName(SelectedTicket);
-            DateTimeOffset dateTime = DatabaseOperations.GetDateCreated(SelectedTicket);
+            IEnumerable<Combination> ticketCombinations = _databaseOperations.GetCombinations(SelectedTicket);
+            string loteriaName = _databaseOperations.GetLoteriaName(SelectedTicket);
+            DateTimeOffset dateTime = _databaseOperations.GetDateCreated(SelectedTicket);
             string dayOfWeek = dateTime.DayOfWeek.ToString();
             string date = dateTime.Date.ToString("D");
             string time = dateTime.TimeOfDay.ToString(@"hh\:mm");

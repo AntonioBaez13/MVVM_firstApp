@@ -1,4 +1,5 @@
-﻿using MVVM_firstApp.Pages;
+﻿using MVVM_firstApp.Models;
+using MVVM_firstApp.Pages;
 using Stylet;
 using StyletIoC;
 
@@ -8,7 +9,8 @@ namespace MVVM_firstApp
     {
         protected override void ConfigureIoC(IStyletIoCBuilder builder)
         {
-            // Configure the IoC container in here
+            builder.Bind<LotoContext>().ToSelf().InSingletonScope();
+            builder.Bind<IDatabaseOperations>().To<DatabaseOperations>().InSingletonScope();
         }
 
         protected override void Configure()

@@ -6,11 +6,16 @@ using System.Linq;
 
 namespace MVVM_firstApp
 {
-    public static class DatabaseOperations
+    public class DatabaseOperations : IDatabaseOperations
     {
-        private static readonly LotoContext db = new();
+        private readonly LotoContext _db;
 
-        public static (string trackPin, int trackTicketId) AddToDabataseAndPrint(IEnumerable<Combination> combinations, LoteriaViewModel selectedLoteria)
+        public DatabaseOperations(LotoContext db)
+        {
+            _db = db;
+        }
+
+        public (string trackPin, int trackTicketId) AddToDabataseAndPrint(IEnumerable<Combination> combinations, LoteriaViewModel selectedLoteria)
         {
             string pin = CreateRandomPin(8);
 
@@ -20,11 +25,11 @@ namespace MVVM_firstApp
                 Cancelled = false,
                 DateCreated = DateTimeOffset.Now
             };
-            db.Ticket.Add(ticket);
+            _db.Ticket.Add(ticket);
 
             foreach (Combination combination in combinations)
             {
-                Jugada jugada = db.Jugada.Where(j => j.Number == combination.Jugada
+                Jugada jugada = _db.Jugada.Where(j => j.Number == combination.Jugada
                                         && j.LoteriaId == selectedLoteria.Id
                                         && j.Date == DateTime.UtcNow.Date).FirstOrDefault();
 
@@ -38,7 +43,7 @@ namespace MVVM_firstApp
                         LoteriaId = selectedLoteria.Id,
                         Date = DateTime.UtcNow.Date,
                     };
-                    db.Jugada.Add(jugada);
+                    _db.Jugada.Add(jugada);
                 } //TODO: add extra else-if statement if the sum exceeds 5 (max) or is a combination of 2 numbers do not add to db
                 else
                 {
@@ -52,14 +57,14 @@ namespace MVVM_firstApp
                     Points = combination.Puntos
                 };
 
-                db.TicketJugada.Add(ticketJugada);
+                _db.TicketJugada.Add(ticketJugada);
             }
 
-            db.SaveChanges();
+            _db.SaveChanges();
             return (pin, ticket.Id);
         }
 
-        public static string CreateRandomPin(int length)
+        public string CreateRandomPin(int length)
         {
             Random random = new();
             string s = string.Empty;
@@ -70,18 +75,18 @@ namespace MVVM_firstApp
             return s;
         }
 
-        public static IEnumerable<LoteriaViewModel> GetAllLoterias()
+        public IEnumerable<LoteriaViewModel> GetAllLoterias()
         {
-            return db.Loteria.Select(x => new LoteriaViewModel()
+            return _db.Loteria.Select(x => new LoteriaViewModel()
             {
                 Id = x.Id,
                 Name = x.Name
             }).ToList();
         }
 
-        public static IEnumerable<Combination> GetCombinations(int ticketId)
+        public IEnumerable<Combination> GetCombinations(int ticketId)
         {
-            List<Combination> copiOfTicket = db.TicketJugada
+            List<Combination> copiOfTicket = _db.TicketJugada
                 .Where(t => t.TicketId == ticketId)
                 .Select(x => new Combination()
                 {
@@ -93,26 +98,26 @@ namespace MVVM_firstApp
             return copiOfTicket;
         }
 
-        public static DateTimeOffset GetDateCreated(int ticketId)
+        public DateTimeOffset GetDateCreated(int ticketId)
         {
-            return db.Ticket.Where(t => t.Id == ticketId).Select(x => x.DateCreated).FirstOrDefault();
+            return _db.Ticket.Where(t => t.Id == ticketId).Select(x => x.DateCreated).FirstOrDefault();
         }
 
-        public static string GetLoteriaName(int ticketId)
+        public string GetLoteriaName(int ticketId)
         {
-            return db.TicketJugada.Where(t => t.TicketId == ticketId).Select(X => X.Jugada.Loteria.Name).FirstOrDefault();
+            return _db.TicketJugada.Where(t => t.TicketId == ticketId).Select(X => X.Jugada.Loteria.Name).FirstOrDefault();
         }
 
-        public static int GetSumOfValuesRepeated(DateTime date)
+        public int GetSumOfValuesRepeated(DateTime date)
         {
-            return db.Jugada.Where(j => j.Date == date).Select(x => x.Repeated).Sum();
+            return _db.Jugada.Where(j => j.Date == date).Select(x => x.Repeated).Sum();
         }
 
-        public static List<TicketJugadaViewModel> GetTicketJugadaViewModel(DateTime date, string number, int loteriaId)
+        public List<TicketJugadaViewModel> GetTicketJugadaViewModel(DateTime date, string number, int loteriaId)
         {
-            int jugadaId = db.Jugada.Where(j => j.Date == date && j.Number == number && j.LoteriaId == loteriaId)
+            int jugadaId = _db.Jugada.Where(j => j.Date == date && j.Number == number && j.LoteriaId == loteriaId)
                 .Select(x => x.Id).FirstOrDefault();
-            List<TicketJugadaViewModel> ticketJugadaViewModel = db.TicketJugada.Where(tj => tj.JugadaId == jugadaId)
+            List<TicketJugadaViewModel> ticketJugadaViewModel = _db.TicketJugada.Where(tj => tj.JugadaId == jugadaId)
                 .Select(x => new TicketJugadaViewModel()
                 {
                     TicketId = x.TicketId,

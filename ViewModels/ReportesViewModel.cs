@@ -7,6 +7,7 @@ namespace MVVM_firstApp.ViewModels
 {
     public class ReportesViewModel : Screen
     {
+        private readonly IDatabaseOperations _databaseOperations;
         private LoteriaViewModel _loteriaToSearch;
         private DateTime _selectedDate;
         private string _reporteText;
@@ -30,17 +31,18 @@ namespace MVVM_firstApp.ViewModels
             set => SetAndNotify(ref _reporteText, value);
         }
 
-        public ReportesViewModel()
+        public ReportesViewModel(IDatabaseOperations databaseOperations)
         {
-            TicketPuntos = new ObservableCollection<TicketJugadaViewModel>();
-            Loterias = DatabaseOperations.GetAllLoterias();
-            SelectedDate = DateTime.Now.Date;
             this.DisplayName = "Reportes";
+            _databaseOperations = databaseOperations;
+            TicketPuntos = new ObservableCollection<TicketJugadaViewModel>();
+            SelectedDate = DateTime.Now.Date;
+            Loterias = _databaseOperations.GetAllLoterias();
         }
 
         public void GetReporte()
         {
-            int totalSum = DatabaseOperations.GetSumOfValuesRepeated(SelectedDate);
+            int totalSum = _databaseOperations.GetSumOfValuesRepeated(SelectedDate);
             ReporteText = $"El {SelectedDate.DayOfWeek} {SelectedDate:D} se vendio un total de {totalSum} euros";
         }
 
@@ -51,7 +53,7 @@ namespace MVVM_firstApp.ViewModels
             ReporteText = "";
             if (!string.IsNullOrEmpty(JugadaToSearch) && LoteriaToSearch != null)
             {
-                List<TicketJugadaViewModel> ticketJugadaRecords = DatabaseOperations.GetTicketJugadaViewModel(SelectedDate.Date, JugadaToSearch, LoteriaToSearch.Id);
+                List<TicketJugadaViewModel> ticketJugadaRecords = _databaseOperations.GetTicketJugadaViewModel(SelectedDate.Date, JugadaToSearch, LoteriaToSearch.Id);
                 if (ticketJugadaRecords.Count == 0)
                 {
                     ReporteText = $"El dia {SelectedDate:D} ningun ticket jugo la jugada especificada: ({JugadaToSearch}) en la ({LoteriaToSearch.Name})";
