@@ -107,11 +107,14 @@ namespace MVVM_firstApp.ViewModels
                 (string trackPin, int trackTicketId) = _databaseOperations.AddToDabataseAndPrint(Combinations, SelectedLoteria);
                 if (trackTicketId > 0)
                 {
+                    PrintBehaviour print = new PrintBehaviour(Combinations, trackPin, trackTicketId, SelectedLoteria.Name);
+                    print.PrintTicket();
                     RemoveAllItems();
                     AddTicketsFromToday(trackTicketId);
                     //TODO: Complete the printing behaviour
-                    //PrintBehaviour print = new PrintBehaviour(Combinations, sucess.trackPin, success.trackTicketId, SelectedLoteria.Name);
-                    //print.PrintTicket();
+                    //the CompleteTicketInfo contains Combinations, TicketNo, LoteriaName (only the Pin would be missing)
+                    //Which means I could make a class that only takes one parameter (two with the PIN as optional)
+                    //And like that we can also handle what we print when we want to rePrint a ticket (which In this case would not have PIN) 
                 }
             }
         }
