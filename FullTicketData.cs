@@ -12,6 +12,8 @@ namespace MVVM_firstApp
 
         public int TicketNo { get; set; }
 
+        public string Pin { get; set; }
+
         public string LoteriaName { get; set; }
 
         public IEnumerable<Combination> Combinations { get; set; }

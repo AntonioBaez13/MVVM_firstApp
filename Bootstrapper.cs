@@ -11,6 +11,7 @@ namespace MVVM_firstApp
         {
             builder.Bind<LotoContext>().ToSelf().InSingletonScope();
             builder.Bind<IDatabaseOperations>().To<DatabaseOperations>().InSingletonScope();
+            builder.Bind<IPrintBehaviour>().To<PrintBehaviour>().InSingletonScope();
         }
 
         protected override void Configure()

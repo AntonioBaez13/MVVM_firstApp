@@ -6,7 +6,7 @@ namespace MVVM_firstApp
 {
     public interface IDatabaseOperations
     {
-        (string trackPin, int trackTicketId) AddToDabataseAndPrint(IEnumerable<Combination> combinations, LoteriaViewModel selectedLoteria);
+        int AddToDabataseAndPrint(IEnumerable<Combination> combinations, LoteriaViewModel selectedLoteria);
         string CreateRandomPin(int length);
         IEnumerable<LoteriaViewModel> GetAllLoterias();
         IEnumerable<Combination> GetCombinations(int ticketId);

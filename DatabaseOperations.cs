@@ -15,7 +15,7 @@ namespace MVVM_firstApp
             _db = db;
         }
 
-        public (string trackPin, int trackTicketId) AddToDabataseAndPrint(IEnumerable<Combination> combinations, LoteriaViewModel selectedLoteria)
+        public int AddToDabataseAndPrint(IEnumerable<Combination> combinations, LoteriaViewModel selectedLoteria)
         {
             string pin = CreateRandomPin(8);
 
@@ -61,7 +61,7 @@ namespace MVVM_firstApp
             }
 
             _db.SaveChanges();
-            return (pin, ticket.Id);
+            return ticket.Id;
         }
 
         public string CreateRandomPin(int length)

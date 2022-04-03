@@ -10,6 +10,7 @@ namespace MVVM_firstApp.ViewModels
     public class VentasViewModel : Screen
     {
         private readonly IDatabaseOperations _databaseOperations;
+        private readonly IPrintBehaviour _printBehaviour;
         private LoteriaViewModel _selectedLoteria;
         private int _selectedTicket;
         private FullTicketData _completeTicketInfo;
@@ -34,7 +35,7 @@ namespace MVVM_firstApp.ViewModels
             {
                 if (SetAndNotify(ref _selectedTicket, value))
                 {
-                    RetrieveTicketInfo();
+                    RetrieveTicketInfo(SelectedTicket);
                 }
             }
         }
@@ -59,10 +60,11 @@ namespace MVVM_firstApp.ViewModels
             set => SetAndNotify(ref _ticketToCopy, value);
         }
 
-        public VentasViewModel(IDatabaseOperations databaseOperations)
+        public VentasViewModel(IDatabaseOperations databaseOperations, IPrintBehaviour printBehaviour)
         {
             this.DisplayName = "Ventas";
             _databaseOperations = databaseOperations;
+            _printBehaviour = printBehaviour;
             Combinations = new ObservableCollection<Combination>();
             TicketsFromToday = new ObservableCollection<int>();
             Loterias = _databaseOperations.GetAllLoterias();
@@ -104,19 +106,24 @@ namespace MVVM_firstApp.ViewModels
             if (Combinations.Count > 0
                 && SelectedLoteria != null)
             {
-                (string trackPin, int trackTicketId) = _databaseOperations.AddToDabataseAndPrint(Combinations, SelectedLoteria);
+                int trackTicketId = _databaseOperations.AddToDabataseAndPrint(Combinations, SelectedLoteria);
                 if (trackTicketId > 0)
                 {
-                    PrintBehaviour print = new PrintBehaviour(Combinations, trackPin, trackTicketId, SelectedLoteria.Name);
-                    print.PrintTicket();
+                    PrintTicket(trackTicketId);
                     RemoveAllItems();
                     AddTicketsFromToday(trackTicketId);
-                    //TODO: Complete the printing behaviour
+                    //TODO: Extract the PrintBehaviour to a separe method, so that it could also be used by the Re-Print button 
                     //the CompleteTicketInfo contains Combinations, TicketNo, LoteriaName (only the Pin would be missing)
                     //Which means I could make a class that only takes one parameter (two with the PIN as optional)
                     //And like that we can also handle what we print when we want to rePrint a ticket (which In this case would not have PIN) 
                 }
             }
+        }
+
+        private void PrintTicket(int ticketId)
+        {
+            RetrieveTicketInfo(ticketId);
+            _printBehaviour.PrintTicket(CompleteTicketInfo);
         }
 
         public void CopyTicket()
@@ -131,11 +138,11 @@ namespace MVVM_firstApp.ViewModels
             }
         }
 
-        public void RetrieveTicketInfo()
+        public void RetrieveTicketInfo(int ticketNo)
         {
-            IEnumerable<Combination> ticketCombinations = _databaseOperations.GetCombinations(SelectedTicket);
-            string loteriaName = _databaseOperations.GetLoteriaName(SelectedTicket);
-            DateTimeOffset dateTime = _databaseOperations.GetDateCreated(SelectedTicket);
+            IEnumerable<Combination> ticketCombinations = _databaseOperations.GetCombinations(ticketNo);
+            string loteriaName = _databaseOperations.GetLoteriaName(ticketNo);
+            DateTimeOffset dateTime = _databaseOperations.GetDateCreated(ticketNo);
             string dayOfWeek = dateTime.DayOfWeek.ToString();
             string date = dateTime.Date.ToString("D");
             string time = dateTime.TimeOfDay.ToString(@"hh\:mm");
@@ -144,7 +151,7 @@ namespace MVVM_firstApp.ViewModels
                 DayOfWeek = dayOfWeek,
                 Date = date,
                 Time = time,
-                TicketNo = SelectedTicket,
+                TicketNo = ticketNo,
                 LoteriaName = loteriaName,
                 Combinations = ticketCombinations
             };
