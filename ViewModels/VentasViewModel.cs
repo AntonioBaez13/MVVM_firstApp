@@ -116,6 +116,7 @@ namespace MVVM_firstApp.ViewModels
                     //the CompleteTicketInfo contains Combinations, TicketNo, LoteriaName (only the Pin would be missing)
                     //Which means I could make a class that only takes one parameter (two with the PIN as optional)
                     //And like that we can also handle what we print when we want to rePrint a ticket (which In this case would not have PIN) 
+                    //TODO Add the Re-Imprimmir button, and handle the functionality (this will conclude the MVP (Minimum Viable Product))
                 }
             }
         }
